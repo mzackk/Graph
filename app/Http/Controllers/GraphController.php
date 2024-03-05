@@ -15,7 +15,9 @@ class GraphController extends Controller
                           ->orderBy('month')
                           ->get();
 
-        $labels = $userCounts->pluck('month')->toArray();
+        $labels = $userCounts->pluck('month')->map(function ($month) {
+            return date('F', mktime(0, 0, 0, $month, 10));
+            })->toArray();
         $data = $userCounts->pluck('count')->toArray();
 
         return view('graphs', compact('labels', 'data'));
